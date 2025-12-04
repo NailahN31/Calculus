@@ -11,7 +11,7 @@ st.set_page_config(
     page_icon="📈"
 )
 
-# Sidebar
+# Sidebar input
 with st.sidebar:
     st.header("Settings")
     function_text = st.text_input("Enter function f(x):", value="x**3 - 3*x")
@@ -29,20 +29,17 @@ grid_color = "#E0E0E0"
 cmap_func = LinearSegmentedColormap.from_list("pastel_func", ["#FFD580", "#FFE4B2"])
 cmap_deriv = LinearSegmentedColormap.from_list("pastel_deriv", ["#FF9AA2", "#FFB3C1"])
 
-# GIF kucing URL
 gif_kucing_url = "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
 
-# CSS Styles with GIF background
+# CSS styling
 st.markdown(f"""
 <style>
 [data-testid="stAppViewContainer"] {{
-    background-image: 
-        url("https://i.ibb.co/3yq9p0Y/pastel-flower.jpg"),
-        url("https://i.ibb.co/TMbJghC/pastel-stars.png"),
-        url("{gif_kucing_url}");
-    background-size: cover, contain, 150px 150px;
-    background-position: center, top right, bottom left;
-    background-repeat: no-repeat, repeat, no-repeat;
+    background-image: url("https://i.ibb.co/3yq9p0Y/pastel-flower.jpg"),
+                      url("https://i.ibb.co/TMbJghC/pastel-stars.png");
+    background-size: cover, contain;
+    background-position: center, top right;
+    background-repeat: no-repeat, repeat;
     background-attachment: fixed;
     background-color: rgba(95, 158, 160, 0.7);
     background-blend-mode: overlay;
@@ -52,16 +49,14 @@ st.markdown(f"""
     background-color: {sidebar_bg};
     color: {text_color};
     padding: 15px;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }}
-[data-testid="stSidebar"] * {{
+[data-testid="stSidebar"] {{
     color: {text_color} !important;
-}}
-.big-title {{
-    font-size: 36px !important;
-    font-weight: 700;
-    text-align: center;
-    color: {text_color};
-    margin-bottom: 20px;
 }}
 .sub-box {{
     background: {box_bg_rgba};
@@ -70,10 +65,34 @@ st.markdown(f"""
     margin-bottom: 20px;
     border: 1px solid {border_color_rgba};
 }}
+.big-title {{
+    font-size: 36px !important;
+    font-weight: 700;
+    text-align: center;
+    color: {text_color};
+    margin-bottom: 20px;
+}}
+/* GIF kucing fixed bottom in sidebar */
+.kucing-gif {{
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}}
 </style>
 """, unsafe_allow_html=True)
 
+# Title
 st.markdown("<div class='big-title'>📈 Enhanced Function & Derivative Visualizer</div>", unsafe_allow_html=True)
+
+# Insert GIF kucing at sidebar bottom using markdown + HTML
+st.sidebar.markdown(
+    f'<img src="{gif_kucing_url}" class="kucing-gif" alt="Cat GIF">',
+    unsafe_allow_html=True
+)
 
 x = sp.symbols("x")
 
@@ -168,3 +187,4 @@ try:
 except Exception as e:
     st.error("Error processing the function.")
     st.error(str(e))
+
