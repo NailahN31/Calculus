@@ -4,86 +4,68 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # penting untuk 3D
 
-plt.style.use("dark_background")  # tetap neon
-
-COLOR_FUNC = "#4FC3F7"    # neon blue
-COLOR_DERIV = "#FF8A65"   # neon orange
-
+# --- Konfigurasi halaman ---
 st.set_page_config(
     page_title="Function & Derivative Plotter",
     layout="wide",
-    page_icon="📈",
+    page_icon="📈"
 )
 
-# ==== BACKGROUND BIRU MUDA + GLASSMORPHISM ====
+# --- Style sederhana: background beige dan glass-effect ringan ---
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(135deg, #b3e5fc, #e1f5fe, #bbdefb) !important;
+    background-color: #f5f5dc !important;  /* beige */
 }
 .main {
     background: transparent;
 }
 .big-title {
-    font-size: 42px !important;
-    font-weight: 800;
+    font-size: 36px !important;
+    font-weight: 700;
     text-align: center;
-    color: #0a2a43; /* biru gelap */
-    padding-top: 10px;
-    text-shadow: 0px 0px 12px rgba(255,255,255,0.7);
+    color: #333333;
+    margin-bottom: 20px;
 }
 .sub-box {
-    background: rgba(255,255,255,0.35);
-    padding: 22px;
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 18px;
+    border-radius: 12px;
     margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.50);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.15);
+    border: 1px solid rgba(200, 200, 200, 0.4);
 }
 [data-testid="stSidebar"] {
-    background: rgba(255,255,255,0.40) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(255,255,255,0.6);
-    box-shadow: 4px 0 25px rgba(0,0,0,0.15);
+    background-color: #fff !important;
+    padding: 15px;
+    border-radius: 8px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ==== JUDUL ====
+# --- Judul ---
 st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
-# ==== SIDEBAR ====
+# --- Sidebar ---
 with st.sidebar:
-    st.header("⚙ Settings")
-    function_text = st.text_input("Put the function f(x):", value="x**2")
+    st.header("Settings")
+    function_text = st.text_input("Enter function f(x):", value="x**2")
     range_min = st.number_input("Range Minimum (x)", value=-10)
     range_max = st.number_input("Range Maximum (x)", value=10)
     num_points = st.slider("Number of points", 200, 2000, 500)
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
 
-    # ==== GIF KUCING DI SIDEBAR ====
-    st.markdown(
-        """
-        <div style="text-align:center; margin-top:20px;">
-            <img src="https://i.gifer.com/7efs.gif" width="150" alt="Cute Cat GIF">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-# ==== SIMBOLIK DAN NUMERIK ====
+# --- Simbolik dan numerik ---
 x = sp.symbols("x")
 
 try:
     func = sp.sympify(function_text)
     derivative = sp.diff(func, x)
 
-    st.markdown("### 🧮 Symbolic derivative f'(x)")
+    # Tampilkan turunan simbolik
+    st.markdown("### Symbolic derivative f'(x)")
     st.latex(sp.latex(derivative))
 
+    # Fungsi numerik
     f_num = sp.lambdify(x, func, "numpy")
     df_num = sp.lambdify(x, derivative, "numpy")
 
@@ -91,55 +73,48 @@ try:
     y_vals = f_num(x_vals)
     dy_vals = df_num(x_vals)
 
-    # -------------------------
-    #        MODE 2D
-    # -------------------------
+    # --- Plot 2D ---
     if plot_mode == "2D":
         col1, col2 = st.columns(2)
 
         with col1:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-            st.subheader("📘 Graph Function f(x)")
+            st.subheader("Graph f(x)")
             fig1, ax1 = plt.subplots()
-            ax1.plot(x_vals, y_vals, color=COLOR_FUNC, linewidth=2.5)
+            ax1.plot(x_vals, y_vals, color="#4FC3F7", linewidth=2)
             ax1.grid(True, alpha=0.3)
             st.pyplot(fig1)
             st.markdown("</div>", unsafe_allow_html=True)
 
         with col2:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-            st.subheader("📕 Graph Derivative f'(x)")
+            st.subheader("Graph f'(x)")
             fig2, ax2 = plt.subplots()
-            ax2.plot(x_vals, dy_vals, color=COLOR_DERIV, linewidth=2.5)
+            ax2.plot(x_vals, dy_vals, color="#FF8A65", linewidth=2)
             ax2.grid(True, alpha=0.3)
             st.pyplot(fig2)
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # -------------------------
-    #        MODE 3D
-    # -------------------------
+    # --- Plot 3D ---
     else:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-        st.subheader("🌐 3D Plot of f(x) & f'(x)")
+        st.subheader("3D Plot of f(x) & f'(x)")
 
-        fig = plt.figure(figsize=(10, 7))
+        fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(111, projection='3d')
 
-        # 3D curves
-        ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color=COLOR_FUNC, linewidth=2.5, label="f(x)")
-        ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color=COLOR_DERIV, linewidth=2.5, label="f'(x)")
+        ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color="#4FC3F7", linewidth=2, label="f(x)")
+        ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color="#FF8A65", linewidth=2, label="f'(x)")
 
-        # Labeling
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("curve id")
-
-        ax.view_init(elev=25, azim=45)  # sudut kamera 3D
+        ax.view_init(elev=25, azim=45)
         ax.legend()
 
         st.pyplot(fig)
         st.markdown("</div>", unsafe_allow_html=True)
 
 except Exception as e:
-    st.error("⚠ Error processing the function.")
+    st.error("Error processing the function.")
     st.error(str(e))
