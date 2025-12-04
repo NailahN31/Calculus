@@ -25,9 +25,9 @@ bg_color = "#5F9EA0"            # main background
 sidebar_bg = "#4682B4"          # sidebar background
 text_color = "#FFFFFF"           # teks putih
 box_bg = "rgba(40, 40, 60, 0.6)" # box plot background
-grid_color = "white"
-color_func = "#00ffff"           # neon cyan
-color_deriv = "#ff6f61"          # neon red-orange
+grid_color = "#E0E0E0"           # light gray grid
+color_func = "#FFD580"           # pastel yellow
+color_deriv = "#FF9AA2"          # pastel pink
 
 # --- CSS for dark theme ---
 st.markdown(f"""
@@ -96,16 +96,18 @@ try:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
             st.subheader("Graph f(x)")
             fig1, ax1 = plt.subplots()
-            ax1.plot(x_vals, y_vals, color=color_func, linewidth=2)
-            ax1.grid(True, color=grid_color, alpha=0.3)
+            ax1.plot(x_vals, y_vals, color=color_func, linewidth=3, alpha=0.8)
+            ax1.grid(True, color=grid_color, alpha=0.5, linestyle="--")
+            ax1.set_facecolor('none')
             st.pyplot(fig1)
             st.markdown("</div>", unsafe_allow_html=True)
         with col2:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
             st.subheader("Graph f'(x)")
             fig2, ax2 = plt.subplots()
-            ax2.plot(x_vals, dy_vals, color=color_deriv, linewidth=2)
-            ax2.grid(True, color=grid_color, alpha=0.3)
+            ax2.plot(x_vals, dy_vals, color=color_deriv, linewidth=3, alpha=0.8)
+            ax2.grid(True, color=grid_color, alpha=0.5, linestyle="--")
+            ax2.set_facecolor('none')
             st.pyplot(fig2)
             st.markdown("</div>", unsafe_allow_html=True)
     else:
@@ -113,8 +115,8 @@ try:
         st.subheader("3D Plot of f(x) & f'(x)")
         fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color=color_func, linewidth=2, label="f(x)")
-        ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color=color_deriv, linewidth=2, label="f'(x)")
+        ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color=color_func, linewidth=3, label="f(x)", alpha=0.8)
+        ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color=color_deriv, linewidth=3, label="f'(x)", alpha=0.8)
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("curve id")
