@@ -4,15 +4,6 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # penting untuk 3D
 
-with st.sidebar:
-    st.markdown(
-        """
-        <div style="text-align:center;">
-            <img src="https://media.tenor.com/65-Hk7dT6FwAAAAj/cat.gif" width="150">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
 
 
 plt.style.use("dark_background")
@@ -26,9 +17,54 @@ st.set_page_config(
     page_icon="📈",
 )
 
-# ==== CUSTOM BACKGROUND + GLASSMORPHISM ====
+# ==== CUSTOM BACKGROUND + GLASSMORPHISM (LIGHT BLUE) ====
 st.markdown("""
 <style>
+
+/* 🌤 BACKGROUND BIRU MUDA */
+body {
+    background: linear-gradient(135deg, #b3e5fc, #e1f5fe, #bbdefb) !important;
+}
+
+/* Transparan untuk container utama */
+.main {
+    background: transparent;
+}
+
+/* Judul */
+.big-title {
+    font-size: 42px !important;
+    font-weight: 800;
+    text-align: center;
+    color: #0a2a43; /* biru gelap */
+    padding-top: 10px;
+    text-shadow: 0px 0px 12px rgba(255,255,255,0.7);
+}
+
+/* Glass effect boxes */
+.sub-box {
+    background: rgba(255,255,255,0.35);
+    padding: 22px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.50);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.15);
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: rgba(255,255,255,0.40) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 4px 0 25px rgba(0,0,0,0.15);
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 body {
     background: linear-gradient(145deg, #0f2027, #203a43, #2c5364) !important;
 }
@@ -142,5 +178,6 @@ try:
 except Exception as e:
     st.error("⚠ Error processing the function.")
     st.error(str(e))
+
 
 
