@@ -15,12 +15,11 @@ st.set_page_config(
 with st.sidebar:
     st.markdown(
         """
-        <div style="background-color: #696969; padding: 15px; border-radius: 10px;">
+        <div style="background-color: #4682B4; padding: 15px; border-radius: 10px;">
         """,
         unsafe_allow_html=True
     )
     st.header("Settings")
-    mode = st.radio("Theme:", ["Light", "Dark"])
     function_text = st.text_input("Enter function f(x):", value="x**2")
     range_min = st.number_input("Range Minimum (x)", value=-10)
     range_max = st.number_input("Range Maximum (x)", value=10)
@@ -28,23 +27,16 @@ with st.sidebar:
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
     st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Warna dan style berdasarkan mode ---
-if mode == "Light":
-    bg_color = "#E0FFFF"       # light cyan
-    text_color = "#000000"     # teks hitam
-    box_bg = "rgba(255, 255, 255, 0.7)"
-    grid_color = "gray"
-    color_func = "#0077b6"
-    color_deriv = "#d65f5f"
-else:
-    bg_color = "#1e1e2f"
-    text_color = "#f0f0f0"
-    box_bg = "rgba(40, 40, 60, 0.6)"
-    grid_color = "white"
-    color_func = "#00ffff"
-    color_deriv = "#ff6f61"
+# --- Colors ---
+bg_color = "#5F9EA0"            # main background
+sidebar_box_color = "#4682B4"    # sidebar background
+text_color = "#FFFFFF"           # white text
+box_bg = "rgba(40, 40, 60, 0.6)" # plot box
+grid_color = "white"
+color_func = "#00ffff"           # neon cyan
+color_deriv = "#ff6f61"          # neon red-orange
 
-# --- CSS untuk main background, teks, judul, box plot ---
+# --- CSS for theme ---
 st.markdown(f"""
 <style>
 /* Main app background */
@@ -53,12 +45,12 @@ st.markdown(f"""
     color: {text_color};
 }}
 
-/* Semua teks sidebar tetap hitam di light mode, putih di dark */
+/* Sidebar text */
 [data-testid="stSidebar"] * {{
     color: {text_color} !important;
 }}
 
-/* Judul */
+/* Title */
 .big-title {{
     font-size: 36px !important;
     font-weight: 700;
@@ -78,7 +70,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# --- Judul ---
+# --- Title ---
 st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
 # --- Symbolic & numeric calculations ---
