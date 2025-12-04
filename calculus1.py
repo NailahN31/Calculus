@@ -13,30 +13,23 @@ st.set_page_config(
 
 # --- Sidebar ---
 with st.sidebar:
-    st.markdown(
-        """
-        <div style="background-color: #4682B4; padding: 15px; border-radius: 10px;">
-        """,
-        unsafe_allow_html=True
-    )
     st.header("Settings")
     function_text = st.text_input("Enter function f(x):", value="x**2")
     range_min = st.number_input("Range Minimum (x)", value=-10)
     range_max = st.number_input("Range Maximum (x)", value=10)
     num_points = st.slider("Number of points", 200, 2000, 500)
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Colors ---
 bg_color = "#5F9EA0"            # main background
-sidebar_box_color = "#4682B4"    # sidebar background
-text_color = "#FFFFFF"           # white text
-box_bg = "rgba(40, 40, 60, 0.6)" # plot box
+sidebar_bg = "#4682B4"          # sidebar background
+text_color = "#FFFFFF"           # teks putih
+box_bg = "rgba(40, 40, 60, 0.6)" # box plot background
 grid_color = "white"
 color_func = "#00ffff"           # neon cyan
 color_deriv = "#ff6f61"          # neon red-orange
 
-# --- CSS for theme ---
+# --- CSS for dark theme ---
 st.markdown(f"""
 <style>
 /* Main app background */
@@ -45,7 +38,14 @@ st.markdown(f"""
     color: {text_color};
 }}
 
-/* Sidebar text */
+/* Sidebar background dan teks */
+[data-testid="stSidebar"] > div:first-child {{
+    background-color: {sidebar_bg};
+    color: {text_color};
+    padding: 15px;
+}}
+
+/* Semua teks sidebar */
 [data-testid="stSidebar"] * {{
     color: {text_color} !important;
 }}
