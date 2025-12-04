@@ -4,6 +4,22 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # penting untuk 3D
 
+st.markdown("""
+<style>
+.floating-cat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99999;
+}
+</style>
+
+<div class="floating-cat">
+    <img src="https://media.tenor.com/ITZl1bO4NfIAAAAj/cute-cat.gif" width="150">
+</div>
+""", unsafe_allow_html=True)
+
+
 plt.style.use("dark_background")
 
 COLOR_FUNC = "#4FC3F7"    # neon blue
@@ -131,3 +147,4 @@ try:
 except Exception as e:
     st.error("⚠ Error processing the function.")
     st.error(str(e))
+
