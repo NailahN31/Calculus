@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import sympy as sp
+import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -23,7 +24,8 @@ with st.sidebar:
 # --- Colors ---
 sidebar_bg = "#4682B4"
 text_color = "#FFFFFF"
-box_bg = "rgba(40, 40, 60, 0.6)"
+box_bg_rgba = "rgba(219, 112, 147, 0.8)"  # #DB7093 with opacity
+border_color_rgba = "rgba(219, 112, 147, 0.9)"
 grid_color = "#E0E0E0"
 
 # Pastel gradient colors
@@ -61,11 +63,11 @@ st.markdown(f"""
     margin-bottom: 20px;
 }}
 .sub-box {{
-    background: {box_bg};
+    background: {box_bg_rgba};
     padding: 18px;
     border-radius: 12px;
     margin-bottom: 20px;
-    border: 1px solid rgba(200, 200, 200, 0.4);
+    border: 1px solid {border_color_rgba};
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -106,7 +108,6 @@ try:
 
     # ---------------- 2D Plot ----------------
     if plot_mode == "2D":
-        import matplotlib.pyplot as plt
         col1, col2 = st.columns(2)
 
         with col1:
