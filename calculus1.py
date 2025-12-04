@@ -4,9 +4,7 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D  # penting untuk 3D
 
-
-
-plt.style.use("dark_background")
+plt.style.use("dark_background")  # tetap neon
 
 COLOR_FUNC = "#4FC3F7"    # neon blue
 COLOR_DERIV = "#FF8A65"   # neon orange
@@ -17,21 +15,15 @@ st.set_page_config(
     page_icon="📈",
 )
 
-# ==== CUSTOM BACKGROUND + GLASSMORPHISM (LIGHT BLUE) ====
+# ==== BACKGROUND BIRU MUDA + GLASSMORPHISM ====
 st.markdown("""
 <style>
-
-/* 🌤 BACKGROUND BIRU MUDA */
 body {
     background: linear-gradient(135deg, #b3e5fc, #e1f5fe, #bbdefb) !important;
 }
-
-/* Transparan untuk container utama */
 .main {
     background: transparent;
 }
-
-/* Judul */
 .big-title {
     font-size: 42px !important;
     font-weight: 800;
@@ -40,8 +32,6 @@ body {
     padding-top: 10px;
     text-shadow: 0px 0px 12px rgba(255,255,255,0.7);
 }
-
-/* Glass effect boxes */
 .sub-box {
     background: rgba(255,255,255,0.35);
     padding: 22px;
@@ -52,8 +42,6 @@ body {
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 0 25px rgba(0,0,0,0.15);
 }
-
-/* Sidebar */
 [data-testid="stSidebar"] {
     background: rgba(255,255,255,0.40) !important;
     backdrop-filter: blur(20px);
@@ -61,55 +49,32 @@ body {
     border-right: 1px solid rgba(255,255,255,0.6);
     box-shadow: 4px 0 25px rgba(0,0,0,0.15);
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-body {
-    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364) !important;
-}
-.main {
-    background: transparent;
-}
-.big-title {
-    font-size: 42px !important;
-    font-weight: 800;
-    text-align: center;
-    color: #ffffff;
-    padding-top: 10px;
-    text-shadow: 0px 0px 15px rgba(0,0,0,0.6);
-}
-.sub-box {
-    background: rgba(255,255,255,0.10);
-    padding: 22px;
-    border-radius: 16px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.25);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.25);
-}
-[data-testid="stSidebar"] {
-    background: rgba(255,255,255,0.10) !important;
-    backdrop-filter: blur(16px);
-    border-right: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 4px 0 25px rgba(0,0,0,0.25);
-}
-</style>
-""", unsafe_allow_html=True)
-
+# ==== JUDUL ====
 st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
+# ==== SIDEBAR ====
 with st.sidebar:
     st.header("⚙ Settings")
     function_text = st.text_input("Put the function f(x):", value="x**2")
-
     range_min = st.number_input("Range Minimum (x)", value=-10)
     range_max = st.number_input("Range Maximum (x)", value=10)
-
     num_points = st.slider("Number of points", 200, 2000, 500)
-
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
 
+    # ==== GIF KUCING DI SIDEBAR ====
+    st.markdown(
+        """
+        <div style="text-align:center; margin-top:20px;">
+            <img src="https://i.gifer.com/7efs.gif" width="150" alt="Cute Cat GIF">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ==== SIMBOLIK DAN NUMERIK ====
 x = sp.symbols("x")
 
 try:
@@ -178,6 +143,3 @@ try:
 except Exception as e:
     st.error("⚠ Error processing the function.")
     st.error(str(e))
-
-
-
