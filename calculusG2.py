@@ -1,55 +1,23 @@
 import streamlit as st
-import numpy as np
-import sympy as sp
-import matplotlib.pyplot as plt
 
-# Title
-st.title("Matrix Application: Function & Derivative Plotter")
-
-# User input
-function_text = st.text_input(
-    "Enter a function of x (examples: x**2, sin(x), exp(x))",
-    value="x**2"
+st.set_page_config(
+    page_title="Calculus Animations",
+    layout="wide",
+    page_icon="📐"
 )
 
-# Symbolic variable
-x = sp.symbols("x")
+st.markdown("<h1 style='text-align:center; color:#FFD580;'>📐 Welcome to Calculus Animations</h1>", unsafe_allow_html=True)
 
-try:
-    # Convert text to symbolic expression
-    func = sp.sympify(function_text)
+# Animasi kalkulus GIF
+calc_gif_url = "https://media.giphy.com/media/l0HlQ7LRalF7wLZgA/giphy.gif"
+st.markdown(f"""
+<div style='display:flex; justify-content:center;'>
+    <img src="{calc_gif_url}" style='width:60%; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.4);'/>
+</div>
+""", unsafe_allow_html=True)
 
-    # Derivative
-    derivative = sp.diff(func, x)
-
-    # Show symbolic derivative
-    st.subheader("Symbolic derivative f'(x)")
-    st.latex(sp.latex(derivative))
-
-    # Prepare numeric functions
-    f_num = sp.lambdify(x, func, "numpy")
-    df_num = sp.lambdify(x, derivative, "numpy")
-
-    # Plot range
-    x_vals = np.linspace(-10, 10, 500)
-    y_vals = f_num(x_vals)
-    dy_vals = df_num(x_vals)
-
-    # Plot function
-    st.subheader("Function Plot")
-    fig1, ax1 = plt.subplots()
-    ax1.plot(x_vals, y_vals, color="blue", label="f(x)")
-    ax1.grid(True)
-    ax1.legend()
-    st.pyplot(fig1)
-
-    # Plot derivative
-    st.subheader("Derivative Plot")
-    fig2, ax2 = plt.subplots()
-    ax2.plot(x_vals, dy_vals, color="red", label="f'(x)")
-    ax2.grid(True)
-    ax2.legend()
-    st.pyplot(fig2)
-
-except Exception as e:
-    st.error(f"Error: {e}")
+st.markdown("""
+<p style='text-align:center; color:#FFFFFF; font-size:18px;'>
+Explore the fascinating world of calculus! Switch to Page 2 to visualize functions and their derivatives interactively.
+</p>
+""", unsafe_allow_html=True)
