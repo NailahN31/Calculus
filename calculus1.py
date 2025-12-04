@@ -2,9 +2,9 @@ import streamlit as st
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # penting untuk 3D
+from mpl_toolkits.mplot3d import Axes3D
 
-# --- Konfigurasi halaman ---
+# --- Page config ---
 st.set_page_config(
     page_title="Function & Derivative Plotter",
     layout="wide",
@@ -23,36 +23,38 @@ with st.sidebar:
 
 # --- Warna dan style berdasarkan mode ---
 if mode == "Light":
-    bg_color = "#f5f5dc"  # beige
+    bg_color = "#f5f5dc"       # beige
+    sidebar_bg = "#ffffff"      # putih
     text_color = "#333333"
     box_bg = "rgba(255, 255, 255, 0.6)"
     grid_color = "gray"
     color_func = "#4FC3F7"
     color_deriv = "#FF8A65"
-else:  # Dark mode
+else:
     bg_color = "#1e1e2f"
+    sidebar_bg = "#2c2c44"     # gelap
     text_color = "#f0f0f0"
     box_bg = "rgba(40, 40, 60, 0.6)"
     grid_color = "white"
     color_func = "#00ffff"
     color_deriv = "#ff6f61"
 
-# --- CSS untuk background, box, dan judul ---
+# --- CSS untuk background, sidebar, judul, box ---
 st.markdown(f"""
 <style>
-/* Background aplikasi */
+/* Main app background */
 [data-testid="stAppViewContainer"] {{
     background-color: {bg_color};
 }}
 
-/* Sidebar */
-[data-testid="stSidebar"] {{
-    background-color: #fff !important;
+/* Sidebar background */
+[data-testid="stSidebar"] > div:first-child {{
+    background-color: {sidebar_bg};
     padding: 15px;
     border-radius: 8px;
 }}
 
-/* Judul */
+/* Title */
 .big-title {{
     font-size: 36px !important;
     font-weight: 700;
@@ -75,18 +77,16 @@ st.markdown(f"""
 # --- Judul ---
 st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
-# --- Simbolik dan numerik ---
+# --- Symbolic & numeric calculations ---
 x = sp.symbols("x")
 
 try:
     func = sp.sympify(function_text)
     derivative = sp.diff(func, x)
 
-    # Tampilkan turunan simbolik
     st.markdown("### Symbolic derivative f'(x)")
     st.latex(sp.latex(derivative))
 
-    # Fungsi numerik
     f_num = sp.lambdify(x, func, "numpy")
     df_num = sp.lambdify(x, derivative, "numpy")
 
@@ -94,10 +94,8 @@ try:
     y_vals = f_num(x_vals)
     dy_vals = df_num(x_vals)
 
-    # --- Plot 2D ---
     if plot_mode == "2D":
         col1, col2 = st.columns(2)
-
         with col1:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
             st.subheader("Graph f(x)")
@@ -106,7 +104,6 @@ try:
             ax1.grid(True, color=grid_color, alpha=0.3)
             st.pyplot(fig1)
             st.markdown("</div>", unsafe_allow_html=True)
-
         with col2:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
             st.subheader("Graph f'(x)")
@@ -115,24 +112,18 @@ try:
             ax2.grid(True, color=grid_color, alpha=0.3)
             st.pyplot(fig2)
             st.markdown("</div>", unsafe_allow_html=True)
-
-    # --- Plot 3D ---
     else:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
         st.subheader("3D Plot of f(x) & f'(x)")
-
         fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(111, projection='3d')
-
         ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color=color_func, linewidth=2, label="f(x)")
         ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color=color_deriv, linewidth=2, label="f'(x)")
-
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("curve id")
         ax.view_init(elev=25, azim=45)
         ax.legend()
-
         st.pyplot(fig)
         st.markdown("</div>", unsafe_allow_html=True)
 
