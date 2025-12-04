@@ -1,3 +1,9 @@
+import streamlit as st
+import numpy as np
+import sympy as sp
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 st.markdown("""
 <style>
 
@@ -44,4 +50,5 @@ body {
 
 </style>
 """, unsafe_allow_html=True)
+
 
