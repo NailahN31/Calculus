@@ -23,16 +23,16 @@ with st.sidebar:
 
 # --- Warna dan style berdasarkan mode ---
 if mode == "Light":
-    bg_color = "#f5f5dc"       # beige
-    sidebar_bg = "#ffffff"      # putih
-    text_color = "#333333"
-    box_bg = "rgba(255, 255, 255, 0.6)"
+    bg_color = "#E0FFFF"       # light cyan
+    sidebar_bg = "#F0FFFF"     # sedikit lebih terang dari main
+    text_color = "#000000"     # teks gelap
+    box_bg = "rgba(255, 255, 255, 0.7)"
     grid_color = "gray"
-    color_func = "#4FC3F7"
-    color_deriv = "#FF8A65"
+    color_func = "#0077b6"     # biru gelap
+    color_deriv = "#d65f5f"    # merah gelap
 else:
     bg_color = "#1e1e2f"
-    sidebar_bg = "#2c2c44"     # gelap
+    sidebar_bg = "#2c2c44"
     text_color = "#f0f0f0"
     box_bg = "rgba(40, 40, 60, 0.6)"
     grid_color = "white"
@@ -75,7 +75,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- Judul ---
-st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
 # --- Symbolic & numeric calculations ---
 x = sp.symbols("x")
