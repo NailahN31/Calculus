@@ -22,22 +22,27 @@ with st.sidebar:
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
 
 # --- Colors ---
-bg_color = "#5F9EA0"            # main background
-sidebar_bg = "#4682B4"          # sidebar background
-text_color = "#FFFFFF"           # teks putih
-box_bg = "rgba(40, 40, 60, 0.6)" # box plot background
-grid_color = "#E0E0E0"           # light gray grid
+sidebar_bg = "#4682B4"
+text_color = "#FFFFFF"
+box_bg = "rgba(40, 40, 60, 0.6)"  # box plot background
+grid_color = "#E0E0E0"
 
 # Pastel gradient colors
 cmap_func = LinearSegmentedColormap.from_list("pastel_func", ["#FFD580", "#FFE4B2"])
 cmap_deriv = LinearSegmentedColormap.from_list("pastel_deriv", ["#FF9AA2", "#FFB3C1"])
 
-# --- CSS for theme ---
+# --- CSS for dark theme + flower bg ---
 st.markdown(f"""
 <style>
-/* Main app background */
+/* Main app background dengan ilustrasi bunga */
 [data-testid="stAppViewContainer"] {{
-    background-color: {bg_color};
+    background-image: url("https://i.ibb.co/3yq9p0Y/pastel-flower.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: rgba(95, 158, 160, 0.7); /* overlay semi-transparent */
+    background-blend-mode: overlay;
     color: {text_color};
 }}
 
@@ -47,8 +52,6 @@ st.markdown(f"""
     color: {text_color};
     padding: 15px;
 }}
-
-/* Semua teks sidebar */
 [data-testid="stSidebar"] * {{
     color: {text_color} !important;
 }}
@@ -120,11 +123,11 @@ try:
         fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(111, projection='3d')
 
-        # --- Gradient pastel line for f(x) ---
+        # Gradient pastel line for f(x)
         for i in range(len(x_vals)-1):
             ax.plot3D(x_vals[i:i+2], y_vals[i:i+2], [0,0],
                       color=cmap_func(i/len(x_vals)), linewidth=3, alpha=0.8)
-        # --- Gradient pastel line for f'(x) ---
+        # Gradient pastel line for f'(x)
         for i in range(len(x_vals)-1):
             ax.plot3D(x_vals[i:i+2], dy_vals[i:i+2], [1,1],
                       color=cmap_deriv(i/len(x_vals)), linewidth=3, alpha=0.8)
