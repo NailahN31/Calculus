@@ -25,11 +25,11 @@ with st.sidebar:
 if mode == "Light":
     bg_color = "#E0FFFF"       # light cyan
     sidebar_bg = "#F0FFFF"     # sedikit lebih terang dari main
-    text_color = "#000000"     # teks gelap
+    text_color = "#000000"     # semua teks hitam
     box_bg = "rgba(255, 255, 255, 0.7)"
     grid_color = "gray"
-    color_func = "#0077b6"     # biru gelap
-    color_deriv = "#d65f5f"    # merah gelap
+    color_func = "#0077b6"
+    color_deriv = "#d65f5f"
 else:
     bg_color = "#1e1e2f"
     sidebar_bg = "#2c2c44"
@@ -39,22 +39,29 @@ else:
     color_func = "#00ffff"
     color_deriv = "#ff6f61"
 
-# --- CSS untuk background, sidebar, judul, box ---
+# --- CSS untuk background, sidebar, judul, box, dan teks ---
 st.markdown(f"""
 <style>
 /* Main app background */
 [data-testid="stAppViewContainer"] {{
     background-color: {bg_color};
+    color: {text_color};
 }}
 
-/* Sidebar background */
+/* Sidebar background dan teks */
 [data-testid="stSidebar"] > div:first-child {{
     background-color: {sidebar_bg};
+    color: {text_color};
     padding: 15px;
     border-radius: 8px;
 }}
 
-/* Title */
+/* Semua teks dalam sidebar */
+[data-testid="stSidebar"] * {{
+    color: {text_color} !important;
+}}
+
+/* Judul */
 .big-title {{
     font-size: 36px !important;
     font-weight: 700;
@@ -75,7 +82,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # --- Judul ---
-st.markdown(f"<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
+st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
 # --- Symbolic & numeric calculations ---
 x = sp.symbols("x")
