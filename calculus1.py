@@ -28,12 +28,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
-st.write("Masukkan fungsi matematika, lalu lihat grafik fungsi dan turunannya secara langsung!")
+st.write("Enter a mathematical function, then view the graph of the function and its derivative directly!")
 
 with st.sidebar:
-    st.header("⚙ Pengaturan Input")
+    st.header("⚙ Settings")
     function_text = st.text_input(
-        "Masukkan fungsi f(x):",
+        "Put the function f(x):",
         value="x**2",
         help="Contoh: sin(x), exp(x), x**3 - 2*x"
     )
@@ -49,7 +49,7 @@ try:
     func = sp.sympify(function_text)
     derivative = sp.diff(func, x)
 
-    st.markdown("### 🧮 Turunan Simbolik f'(x)")
+    st.markdown("### 🧮 Symbolic derivative f'(x)")
     st.latex(sp.latex(derivative))
 
     f_num = sp.lambdify(x, func, "numpy")
@@ -63,7 +63,7 @@ try:
 
     with col1:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-        st.subheader("📘 Grafik Fungsi f(x)")
+        st.subheader("📘 Graph Function f(x)")
         fig1, ax1 = plt.subplots()
         ax1.plot(x_vals, y_vals, label="f(x)")
         ax1.grid(True, alpha=0.3)
@@ -73,7 +73,7 @@ try:
 
     with col2:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-        st.subheader("📕 Grafik Turunan f'(x)")
+        st.subheader("📕 Graph Derivative f'(x)")
         fig2, ax2 = plt.subplots()
         ax2.plot(x_vals, dy_vals, label="f'(x)")
         ax2.grid(True, alpha=0.3)
