@@ -3,6 +3,7 @@ import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import LinearSegmentedColormap
 
 # --- Page config ---
 st.set_page_config(
@@ -26,10 +27,12 @@ sidebar_bg = "#4682B4"          # sidebar background
 text_color = "#FFFFFF"           # teks putih
 box_bg = "rgba(40, 40, 60, 0.6)" # box plot background
 grid_color = "#E0E0E0"           # light gray grid
-color_func = "#FFD580"           # pastel yellow
-color_deriv = "#FF9AA2"          # pastel pink
 
-# --- CSS for dark theme ---
+# Pastel gradient colors
+cmap_func = LinearSegmentedColormap.from_list("pastel_func", ["#FFD580", "#FFE4B2"])
+cmap_deriv = LinearSegmentedColormap.from_list("pastel_deriv", ["#FF9AA2", "#FFB3C1"])
+
+# --- CSS for theme ---
 st.markdown(f"""
 <style>
 /* Main app background */
@@ -96,7 +99,7 @@ try:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
             st.subheader("Graph f(x)")
             fig1, ax1 = plt.subplots()
-            ax1.plot(x_vals, y_vals, color=color_func, linewidth=3, alpha=0.8)
+            ax1.plot(x_vals, y_vals, color="#FFD580", linewidth=3, alpha=0.8)
             ax1.grid(True, color=grid_color, alpha=0.5, linestyle="--")
             ax1.set_facecolor('none')
             st.pyplot(fig1)
@@ -105,7 +108,7 @@ try:
             st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
             st.subheader("Graph f'(x)")
             fig2, ax2 = plt.subplots()
-            ax2.plot(x_vals, dy_vals, color=color_deriv, linewidth=3, alpha=0.8)
+            ax2.plot(x_vals, dy_vals, color="#FF9AA2", linewidth=3, alpha=0.8)
             ax2.grid(True, color=grid_color, alpha=0.5, linestyle="--")
             ax2.set_facecolor('none')
             st.pyplot(fig2)
@@ -113,15 +116,23 @@ try:
     else:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
         st.subheader("3D Plot of f(x) & f'(x)")
+
         fig = plt.figure(figsize=(10, 6))
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color=color_func, linewidth=3, label="f(x)", alpha=0.8)
-        ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color=color_deriv, linewidth=3, label="f'(x)", alpha=0.8)
+
+        # --- Gradient pastel line for f(x) ---
+        for i in range(len(x_vals)-1):
+            ax.plot3D(x_vals[i:i+2], y_vals[i:i+2], [0,0],
+                      color=cmap_func(i/len(x_vals)), linewidth=3, alpha=0.8)
+        # --- Gradient pastel line for f'(x) ---
+        for i in range(len(x_vals)-1):
+            ax.plot3D(x_vals[i:i+2], dy_vals[i:i+2], [1,1],
+                      color=cmap_deriv(i/len(x_vals)), linewidth=3, alpha=0.8)
+
         ax.set_xlabel("x")
         ax.set_ylabel("y")
         ax.set_zlabel("curve id")
         ax.view_init(elev=25, azim=45)
-        ax.legend()
         st.pyplot(fig)
         st.markdown("</div>", unsafe_allow_html=True)
 
