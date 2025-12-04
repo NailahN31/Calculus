@@ -2,6 +2,12 @@ import streamlit as st
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D  # penting untuk 3D
+
+plt.style.use("dark_background")
+
+COLOR_FUNC = "#4FC3F7"    # neon blue
+COLOR_DERIV = "#FF8A65"   # neon orange
 
 st.set_page_config(
     page_title="Function & Derivative Plotter",
@@ -9,66 +15,54 @@ st.set_page_config(
     page_icon="📈",
 )
 
-# ==== CUSTOM BACKGROUND + STYLE ====
+# ==== CUSTOM BACKGROUND + GLASSMORPHISM ====
 st.markdown("""
 <style>
-/* Background gradient */
 body {
-    background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
+    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364) !important;
 }
-
-/* Streamlit main container */
 .main {
     background: transparent;
 }
-
-/* Big title */
 .big-title {
-    font-size: 40px !important;
-    font-weight: 700;
+    font-size: 42px !important;
+    font-weight: 800;
     text-align: center;
     color: #ffffff;
-    text-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+    padding-top: 10px;
+    text-shadow: 0px 0px 15px rgba(0,0,0,0.6);
 }
-
-/* Card / glassmorphism box */
 .sub-box {
-    background: rgba(255,255,255,0.15);
-    padding: 20px;
-    border-radius: 12px;
+    background: rgba(255,255,255,0.10);
+    padding: 22px;
+    border-radius: 16px;
     margin-bottom: 20px;
-    border: 1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
 }
-
-/* Sidebar style */
 [data-testid="stSidebar"] {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.10) !important;
+    backdrop-filter: blur(16px);
     border-right: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 4px 0 25px rgba(0,0,0,0.25);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ==== TITLE ====
 st.markdown("<div class='big-title'>📈 Function & Derivative Visualizer</div>", unsafe_allow_html=True)
-st.write("Enter a mathematical function, then view the graph of the function and its derivative directly!")
 
-# ==== SIDEBAR ====
 with st.sidebar:
     st.header("⚙ Settings")
-    function_text = st.text_input(
-        "Put the function f(x):",
-        value="x**2",
-        help="Examples: sin(x), exp(x), x**3 - 2*x"
-    )
+    function_text = st.text_input("Put the function f(x):", value="x**2")
 
     range_min = st.number_input("Range Minimum (x)", value=-10)
     range_max = st.number_input("Range Maximum (x)", value=10)
 
-    num_points = st.slider("Number of points (resolution)", 200, 2000, 500)
+    num_points = st.slider("Number of points", 200, 2000, 500)
 
-# ==== MAIN LOGIC ====
+    plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
+
 x = sp.symbols("x")
 
 try:
@@ -85,30 +79,55 @@ try:
     y_vals = f_num(x_vals)
     dy_vals = df_num(x_vals)
 
-    col1, col2 = st.columns(2)
+    # -------------------------
+    #        MODE 2D
+    # -------------------------
+    if plot_mode == "2D":
+        col1, col2 = st.columns(2)
 
-    # Graph function
-    with col1:
-        st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-        st.subheader("📘 Graph Function f(x)")
-        fig1, ax1 = plt.subplots()
-        ax1.plot(x_vals, y_vals, label="f(x)", color="#4FC3F7")
-        ax1.grid(True, alpha=0.3)
-        ax1.legend()
-        st.pyplot(fig1)
-        st.markdown("</div>", unsafe_allow_html=True)
+        with col1:
+            st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
+            st.subheader("📘 Graph Function f(x)")
+            fig1, ax1 = plt.subplots()
+            ax1.plot(x_vals, y_vals, color=COLOR_FUNC, linewidth=2.5)
+            ax1.grid(True, alpha=0.3)
+            st.pyplot(fig1)
+            st.markdown("</div>", unsafe_allow_html=True)
 
-    # Graph derivative
-    with col2:
+        with col2:
+            st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
+            st.subheader("📕 Graph Derivative f'(x)")
+            fig2, ax2 = plt.subplots()
+            ax2.plot(x_vals, dy_vals, color=COLOR_DERIV, linewidth=2.5)
+            ax2.grid(True, alpha=0.3)
+            st.pyplot(fig2)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    # -------------------------
+    #        MODE 3D
+    # -------------------------
+    else:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
-        st.subheader("📕 Graph Derivative f'(x)")
-        fig2, ax2 = plt.subplots()
-        ax2.plot(x_vals, dy_vals, label="f'(x)", color="#FF8A65")
-        ax2.grid(True, alpha=0.3)
-        ax2.legend()
-        st.pyplot(fig2)
+        st.subheader("🌐 3D Plot of f(x) & f'(x)")
+
+        fig = plt.figure(figsize=(10, 7))
+        ax = fig.add_subplot(111, projection='3d')
+
+        # 3D curves
+        ax.plot3D(x_vals, y_vals, np.zeros_like(x_vals), color=COLOR_FUNC, linewidth=2.5, label="f(x)")
+        ax.plot3D(x_vals, dy_vals, np.ones_like(x_vals), color=COLOR_DERIV, linewidth=2.5, label="f'(x)")
+
+        # Labeling
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("curve id")
+
+        ax.view_init(elev=25, azim=45)  # sudut kamera 3D
+        ax.legend()
+
+        st.pyplot(fig)
         st.markdown("</div>", unsafe_allow_html=True)
 
 except Exception as e:
-    st.error("⚠ Error processing the function. Check your input.")
+    st.error("⚠ Error processing the function.")
     st.error(str(e))
