@@ -23,12 +23,12 @@ with st.sidebar:
 
 # --- Set CSS berdasarkan mode ---
 if mode == "Light":
-    bg_color = "#f5f5dc"  # beige
+    bg_color = "#E0FFFF"  # beige
     text_color = "#333333"
     box_bg = "rgba(255, 255, 255, 0.6)"
     grid_color = "gray"
 else:  # Dark mode
-    bg_color = "#1e1e2f"
+    bg_color = "#191970"
     text_color = "#f0f0f0"
     box_bg = "rgba(40, 40, 60, 0.6)"
     grid_color = "white"
@@ -134,3 +134,4 @@ try:
 except Exception as e:
     st.error("Error processing the function.")
     st.error(str(e))
+
