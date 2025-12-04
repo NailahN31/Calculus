@@ -13,6 +13,12 @@ st.set_page_config(
 
 # --- Sidebar ---
 with st.sidebar:
+    st.markdown(
+        """
+        <div style="background-color: #696969; padding: 15px; border-radius: 10px;">
+        """,
+        unsafe_allow_html=True
+    )
     st.header("Settings")
     mode = st.radio("Theme:", ["Light", "Dark"])
     function_text = st.text_input("Enter function f(x):", value="x**2")
@@ -20,26 +26,25 @@ with st.sidebar:
     range_max = st.number_input("Range Maximum (x)", value=10)
     num_points = st.slider("Number of points", 200, 2000, 500)
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Warna dan style berdasarkan mode ---
 if mode == "Light":
     bg_color = "#E0FFFF"       # light cyan
-    sidebar_bg = "#F0FFFF"     # sedikit lebih terang dari main
-    text_color = "#000000"     # semua teks hitam
+    text_color = "#000000"     # teks hitam
     box_bg = "rgba(255, 255, 255, 0.7)"
     grid_color = "gray"
     color_func = "#0077b6"
     color_deriv = "#d65f5f"
 else:
     bg_color = "#1e1e2f"
-    sidebar_bg = "#2c2c44"
     text_color = "#f0f0f0"
     box_bg = "rgba(40, 40, 60, 0.6)"
     grid_color = "white"
     color_func = "#00ffff"
     color_deriv = "#ff6f61"
 
-# --- CSS untuk background, sidebar, judul, box, dan teks ---
+# --- CSS untuk main background, teks, judul, box plot ---
 st.markdown(f"""
 <style>
 /* Main app background */
@@ -48,15 +53,7 @@ st.markdown(f"""
     color: {text_color};
 }}
 
-/* Sidebar background dan teks */
-[data-testid="stSidebar"] > div:first-child {{
-    background-color: {sidebar_bg};
-    color: {text_color};
-    padding: 15px;
-    border-radius: 8px;
-}}
-
-/* Semua teks dalam sidebar */
+/* Semua teks sidebar tetap hitam di light mode, putih di dark */
 [data-testid="stSidebar"] * {{
     color: {text_color} !important;
 }}
