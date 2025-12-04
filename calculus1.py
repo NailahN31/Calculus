@@ -5,14 +5,13 @@ import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 from matplotlib.colors import LinearSegmentedColormap
 
-# --- Page config ---
 st.set_page_config(
     page_title="Enhanced Function & Derivative Visualizer",
     layout="wide",
     page_icon="📈"
 )
 
-# --- Sidebar ---
+# Sidebar
 with st.sidebar:
     st.header("Settings")
     function_text = st.text_input("Enter function f(x):", value="x**3 - 3*x")
@@ -21,27 +20,29 @@ with st.sidebar:
     num_points = st.slider("Number of points", 200, 2000, 500)
     plot_mode = st.radio("Plot Mode:", ["2D", "3D"])
 
-# --- Colors ---
 sidebar_bg = "#4682B4"
 text_color = "#FFFFFF"
 box_bg_rgba = "rgba(219, 112, 147, 0.8)"  # #DB7093 with opacity
 border_color_rgba = "rgba(219, 112, 147, 0.9)"
 grid_color = "#E0E0E0"
 
-# Pastel gradient colors
 cmap_func = LinearSegmentedColormap.from_list("pastel_func", ["#FFD580", "#FFE4B2"])
 cmap_deriv = LinearSegmentedColormap.from_list("pastel_deriv", ["#FF9AA2", "#FFB3C1"])
 
-# --- CSS ---
+# GIF kucing URL
+gif_kucing_url = "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
+
+# CSS Styles with GIF background
 st.markdown(f"""
 <style>
 [data-testid="stAppViewContainer"] {{
     background-image: 
         url("https://i.ibb.co/3yq9p0Y/pastel-flower.jpg"),
-        url("https://i.ibb.co/TMbJghC/pastel-stars.png");
-    background-size: cover, contain;
-    background-position: center, top right;
-    background-repeat: no-repeat, repeat;
+        url("https://i.ibb.co/TMbJghC/pastel-stars.png"),
+        url("{gif_kucing_url}");
+    background-size: cover, contain, 150px 150px;
+    background-position: center, top right, bottom left;
+    background-repeat: no-repeat, repeat, no-repeat;
     background-attachment: fixed;
     background-color: rgba(95, 158, 160, 0.7);
     background-blend-mode: overlay;
@@ -72,10 +73,8 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# --- Title ---
 st.markdown("<div class='big-title'>📈 Enhanced Function & Derivative Visualizer</div>", unsafe_allow_html=True)
 
-# --- Symbolic & numeric calculations ---
 x = sp.symbols("x")
 
 try:
@@ -83,19 +82,16 @@ try:
     derivative = sp.diff(func, x)
     second_derivative = sp.diff(derivative, x)
 
-    # Step-by-step derivative
     st.markdown("### Step-by-step derivative f'(x)")
     st.latex(sp.latex(derivative))
 
     f_num = sp.lambdify(x, func, "numpy")
     df_num = sp.lambdify(x, derivative, "numpy")
-    d2f_num = sp.lambdify(x, second_derivative, "numpy")
 
     x_vals = np.linspace(range_min, range_max, num_points)
     y_vals = f_num(x_vals)
     dy_vals = df_num(x_vals)
 
-    # --- Find critical points ---
     critical_points = sp.solve(derivative, x)
     critical_points = [p.evalf() for p in critical_points if p.is_real]
     max_points, min_points = [], []
@@ -106,7 +102,6 @@ try:
         elif sd > 0:
             min_points.append(p)
 
-    # ---------------- 2D Plot ----------------
     if plot_mode == "2D":
         col1, col2 = st.columns(2)
 
@@ -135,7 +130,6 @@ try:
             st.pyplot(fig2)
             st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---------------- 3D Plot ----------------
     else:
         st.markdown("<div class='sub-box'>", unsafe_allow_html=True)
         st.subheader("3D Interactive Curve f(x) & f'(x)")
@@ -144,7 +138,6 @@ try:
         z_vals = np.zeros_like(x_vals)
         z_vals2 = np.ones_like(x_vals)
 
-        # Use Plotly for interactive animation effect
         fig3d = go.Figure()
 
         fig3d.add_trace(go.Scatter3d(
