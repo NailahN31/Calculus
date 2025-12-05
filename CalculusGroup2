@@ -1,1 +1,57 @@
+import streamlit as st
 
+st.set_page_config(
+    page_title="Calculus Group 2",
+    layout="centered",
+    page_icon="📘"
+)
+
+# =======================
+# PAGE 1 – GROUP INFO
+# =======================
+
+st.markdown("""
+<style>
+[data-testid="stAppViewContainer"] {
+    background-color: #87AFC7;
+    color: white;
+}
+.title-text {
+    font-size: 40px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.member-box {
+    background: rgba(255,255,255,0.15);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("<div class='title-text'>📘 Calculus Group 2</div>", unsafe_allow_html=True)
+
+st.markdown("<h3>👥 Members:</h3>", unsafe_allow_html=True)
+
+members = [
+    "1. Rizki Adiputra",
+    "2. Nailah Nurramadhanti",
+    "3. Suci Khadijah Siregar",
+    "4. Salsabila Cantika"
+]
+
+st.markdown("<div class='member-box'>", unsafe_allow_html=True)
+for m in members:
+    st.markdown(f"### • {m}")
+st.markdown("</div>", unsafe_allow_html=True)
+
+st.write("### 📷 Tambahkan Foto Kelompok:")
+uploaded_file = st.file_uploader("Upload Foto di sini", type=["jpg","jpeg","png"])
+
+if uploaded_file:
+    st.image(uploaded_file, caption="Foto Kelompok", use_column_width=True)
+
+st.write("---")
+st.write("Silakan buka *Page 2* di sidebar untuk melihat Function Visualizer 🎉")
